@@ -35,7 +35,17 @@
   .leafgrp{opacity:0.15;transition:opacity .6s ease;}
   .leafgrp.show{opacity:1;}
 
-  section{padding:64px 20px 84px;max-width:900px;margin:0 auto;position:relative;}
+  section.page{padding:64px 20px 130px;max-width:900px;margin:0 auto;position:relative;min-height:100vh;box-sizing:border-box;}
+  .page:not(.activePage){display:none !important;}
+
+  #pageNav{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);padding:8px 16px;border-radius:999px;box-shadow:var(--shadow);z-index:600;}
+  #pageNav button{width:38px;height:38px;border-radius:50%;border:none;background:var(--leaf);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Mitr',sans-serif;flex-shrink:0;}
+  #pageNav button:disabled{opacity:.3;cursor:not-allowed;}
+  #pageCounter{font-family:'Mitr',sans-serif;font-size:12.5px;color:#8a8470;min-width:48px;text-align:center;}
+  #pageDots{display:flex;gap:6px;align-items:center;}
+  #pageDots .pdot{width:8px;height:8px;border-radius:50%;background:#E5E1D3;cursor:pointer;transition:all .2s ease;}
+  #pageDots .pdot.on{background:var(--leaf);width:20px;border-radius:5px;}
+  @media (max-width:720px){#pageNav{bottom:8px;padding:6px 10px;gap:8px;} #pageNav button{width:32px;height:32px;font-size:16px;} #pageDots{display:none;}}
   .eyebrow{display:inline-block;font-family:'Mitr',sans-serif;font-weight:600;font-size:13px;letter-spacing:.5px;color:var(--leaf-dark);background:#E8F7EC;padding:5px 14px;border-radius:999px;margin-bottom:14px;}
   h2.title{font-size:clamp(26px,4vw,38px);margin:0 0 16px;line-height:1.25;}
   .card{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:24px;}
@@ -381,7 +391,7 @@
   <div id="treeLabel">0/6 บทเรียน</div>
 </div>
 
-<section id="hero">
+<section id="hero" class="page activePage">
   <div class="badge">🌱 คู่มือนักลงทุนตัวน้อย</div>
   <h1>มาปลูก <span>ต้นไม้แห่งความมั่งคั่ง</span><br>ไปด้วยกันนะ!</h1>
   <p>เรียนรู้เรื่องหุ้นแบบง่ายๆ ผ่านการ์ตูนและเกมสนุกๆ ทำให้ครบ 6 บท แล้วต้นไม้จะโตเต็มต้น!</p>
@@ -395,7 +405,7 @@
   </div>
 </section>
 
-<section id="s0">
+<section id="s0" class="page">
   <div class="sectionNum">ก่อนเริ่ม...</div>
   <div class="eyebrow">นิทานร้านน้ำมะม่วงปั่น</div>
   <h2 class="title">ทำไมถึงมี "หุ้น" กันนะ?</h2>
@@ -436,7 +446,7 @@
   </div>
 </section>
 
-<section id="s1">
+<section id="s1" class="page">
   <div class="sectionNum">บทที่ 1</div>
   <div class="eyebrow">ทางด่วนสู่ความมั่งคั่ง</div>
   <h2 class="title">ทำไม "ออมเงิน" อย่างเดียวไม่พอ?</h2>
@@ -466,7 +476,7 @@
   </div>
 </section>
 
-<section id="s2">
+<section id="s2" class="page">
   <div class="sectionNum">บทที่ 2</div>
   <div class="eyebrow">วัดความเสี่ยง วัดความเป็นตัวคุณ</div>
   <h2 class="title">เธอเป็นนักลงทุนแบบไหนนะ?</h2>
@@ -487,7 +497,7 @@
   </div>
 </section>
 
-<section id="s3">
+<section id="s3" class="page">
   <div class="sectionNum">บทที่ 3</div>
   <div class="eyebrow">รู้จักหุ้นสักนิด ก่อนคิดเทรด</div>
   <h2 class="title">"หุ้น" คืออะไรกันนะ?</h2>
@@ -508,7 +518,7 @@
   </div>
 </section>
 
-<section id="s4">
+<section id="s4" class="page">
   <div class="sectionNum">บทที่ 4</div>
   <div class="eyebrow">อย่าใส่ไข่ไว้ในตะกร้าใบเดียว</div>
   <h2 class="title">เกม: กระจายไข่ให้ถูกตะกร้า! 🥚</h2>
@@ -546,7 +556,7 @@
   </div>
 </section>
 
-<section id="s5">
+<section id="s5" class="page">
   <div class="sectionNum">บทที่ 5</div>
   <div class="eyebrow">6 ขั้นตอนการลงทุนในหุ้น</div>
   <h2 class="title">แผนที่นักลงทุนมือใหม่</h2>
@@ -564,7 +574,7 @@
   </div>
 </section>
 
-<section id="s6">
+<section id="s6" class="page">
   <div class="sectionNum">บทที่ 6</div>
   <div class="eyebrow">แบบทดสอบส่งท้าย</div>
   <h2 class="title">มาทดสอบความเข้าใจกัน!</h2>
@@ -582,15 +592,65 @@
     <p id="scoreMsg" style="font-size:16px;color:#5a6478;"></p>
     <button class="btn" onclick="location.reload()">เล่นใหม่อีกครั้ง 🔁</button>
   </div>
+  <footer>
+    🌳 สร้างต้นไม้แห่งความมั่งคั่งของคุณให้เต็มต้น แล้วไปเรียนรู้เพิ่มเติมได้ที่ set.or.th/education<br>
+    ดัดแปลงเพื่อการศึกษาจาก "Investor's Practice Guide คู่มือผู้ลงทุน ฉบับลงทุนในหุ้น" — ตลาดหลักทรัพย์แห่งประเทศไทย
+  </footer>
 </section>
 
-<footer>
-  🌳 สร้างต้นไม้แห่งความมั่งคั่งของคุณให้เต็มต้น แล้วไปเรียนรู้เพิ่มเติมได้ที่ set.or.th/education<br>
-  ดัดแปลงเพื่อการศึกษาจาก "Investor's Practice Guide คู่มือผู้ลงทุน ฉบับลงทุนในหุ้น" — ตลาดหลักทรัพย์แห่งประเทศไทย
-</footer>
+<div id="pageNav">
+  <button id="prevBtn" onclick="prevPage()">‹</button>
+  <div id="pageDots"></div>
+  <span id="pageCounter">1 / 8</span>
+  <button id="nextBtn" onclick="nextPage()">›</button>
+</div>
 
 <script>
-function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+const pageIds = ['hero','s0','s1','s2','s3','s4','s5','s6'];
+let currentPage = 0;
+
+function animateBarsIfNeeded(id){
+  if(id==='s1'){
+    document.getElementById('barSlow').style.width='22%';
+    document.getElementById('barFast').style.width='78%';
+  }
+}
+
+function showPage(idx){
+  idx = Math.max(0, Math.min(pageIds.length-1, idx));
+  currentPage = idx;
+  pageIds.forEach((id,i)=>{
+    document.getElementById(id).classList.toggle('activePage', i===idx);
+  });
+  window.scrollTo({top:0,left:0,behavior:'auto'});
+  animateBarsIfNeeded(pageIds[idx]);
+  updateNav();
+}
+function nextPage(){ showPage(currentPage+1); }
+function prevPage(){ showPage(currentPage-1); }
+function scrollToId(id){ const i = pageIds.indexOf(id); if(i>-1) showPage(i); }
+
+function updateNav(){
+  document.getElementById('prevBtn').disabled = currentPage===0;
+  document.getElementById('nextBtn').disabled = currentPage===pageIds.length-1;
+  document.querySelectorAll('#pageDots .pdot').forEach((d,i)=>d.classList.toggle('on', i===currentPage));
+  document.getElementById('pageCounter').textContent = (currentPage+1)+' / '+pageIds.length;
+}
+
+const dotsWrap = document.getElementById('pageDots');
+pageIds.forEach((id,i)=>{
+  const d = document.createElement('div');
+  d.className='pdot';
+  d.title = id;
+  d.addEventListener('click', ()=>showPage(i));
+  dotsWrap.appendChild(d);
+});
+updateNav();
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight') nextPage();
+  if(e.key==='ArrowLeft') prevPage();
+});
 
 let completed = new Set();
 function completeSection(n){
@@ -603,17 +663,6 @@ function completeSection(n){
     setTimeout(()=>document.getElementById(fruitIds[i])?.classList.add('show'), 300+i*80);
   }
 }
-
-const obs1 = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      document.getElementById('barSlow').style.width='22%';
-      document.getElementById('barFast').style.width='78%';
-      obs1.disconnect();
-    }
-  });
-},{threshold:0.4});
-obs1.observe(document.getElementById('s1'));
 
 const quizData = [
   {q:"ถ้ามีเงินเก็บอยากนำไปลงทุน เธอรู้สึกแบบไหน?", options:[
