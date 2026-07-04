@@ -1,0 +1,11 @@
+{
+  "name": "little-investor",
+  "version": "1.0.0",
+  "description": "นักลงทุนน้อย - เว็บสอนลูกเรื่องหุ้นแบบสนุกๆ",
+  "scripts": {
+    "start": "serve -s . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
