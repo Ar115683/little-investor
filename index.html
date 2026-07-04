@@ -167,6 +167,29 @@
   .miniFlip .flipBack{font-size:13px;}
 
   footer{text-align:center;padding:36px 20px 56px;color:#9b9482;font-size:12.5px;}
+
+  /* ---------- Compound interest (s1b) ---------- */
+  .yearPicker{display:flex;gap:10px;flex-wrap:wrap;}
+  .yearBtn{font-family:'Mitr',sans-serif;font-weight:600;background:#FBFAF5;border:2px solid #EDE9DD;border-radius:999px;padding:10px 22px;cursor:pointer;font-size:14px;color:var(--ink);transition:all .15s ease;}
+  .yearBtn:hover{border-color:var(--sun);}
+  .yearBtn.active{background:var(--leaf);border-color:var(--leaf);color:#fff;}
+  .resultBig{text-align:center;font-family:'Mitr',sans-serif;font-size:24px;margin:4px 0 0;}
+
+  /* ---------- Inflation (s1c) ---------- */
+  .inflationRow{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .inflationCard{text-align:center;background:#FBFAF5;border-radius:16px;padding:18px 16px;min-width:130px;flex:1;}
+  .inflationCard.now{background:#EAF9EE;border:2px solid var(--leaf);}
+  .inflationCard .iconBox{width:56px;height:56px;margin:0 auto 8px;}
+  .infLabel{font-size:13px;color:#8a8470;font-weight:600;}
+  .infPrice{font-family:'Mitr',sans-serif;font-size:21px;color:var(--ink);margin-top:4px;}
+
+  /* ---------- Scam warning (s5b) ---------- */
+  .warnGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px;}
+  @media (max-width:640px){.warnGrid{grid-template-columns:1fr;}}
+  .warnCard{background:white;border-radius:18px;box-shadow:var(--shadow);padding:18px;display:flex;gap:14px;align-items:flex-start;}
+  .warnCard .iconBox{width:42px;height:42px;flex-shrink:0;}
+  .warnCard h4{margin:0 0 4px;font-family:'Mitr',sans-serif;font-size:14.5px;color:var(--coral);}
+  .warnCard p{margin:0;font-size:13.5px;color:#5a6478;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -368,6 +391,30 @@
   <path d="M76 66 L88 76 L74 80 Z" fill="#FF6B81"/>
 </symbol>
 
+<symbol id="icecream" viewBox="0 0 100 100">
+  <path d="M36 46 L64 46 L52 92 L48 92 Z" fill="#E3B96C"/>
+  <circle cx="50" cy="34" r="27" fill="#FFC3CE"/>
+  <circle cx="34" cy="28" r="5" fill="#FFFFFF" opacity=".6"/>
+  <circle cx="50" cy="12" r="8" fill="#FF6B81"/>
+</symbol>
+
+<symbol id="fundbasket" viewBox="0 0 100 100">
+  <path d="M18 54 L28 90 L72 90 L82 54 Z" fill="#FDF3E3" stroke="#E3B96C" stroke-width="3"/>
+  <path d="M18 54 L82 54" stroke="#E3B96C" stroke-width="3"/>
+  <circle cx="36" cy="44" r="10" fill="#FFC93C"/>
+  <circle cx="50" cy="38" r="10" fill="#3D9DF2"/>
+  <circle cx="64" cy="44" r="10" fill="#FF6B81"/>
+  <circle cx="50" cy="16" r="12" fill="#C89B6B"/>
+  <circle cx="46" cy="14" r="2.4" fill="#3B2A20"/><circle cx="54" cy="14" r="2.4" fill="#3B2A20"/>
+  <rect x="43" y="26" width="14" height="12" rx="2" fill="#3D9DF2"/>
+</symbol>
+
+<symbol id="warnsign" viewBox="0 0 100 100">
+  <path d="M50 8 L94 86 L6 86 Z" fill="#FFC93C" stroke="#E0A814" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="45" y="38" width="10" height="26" rx="4" fill="#7a5200"/>
+  <circle cx="50" cy="72" r="6" fill="#7a5200"/>
+</symbol>
+
 </defs>
 </svg>
 
@@ -387,8 +434,16 @@
     <circle class="fruit" id="fruit4" cx="25" cy="110" r="7" fill="#FF6B81" stroke="#d94a63" stroke-width="2"/>
     <circle class="fruit" id="fruit5" cx="75" cy="105" r="7" fill="#FFC93C" stroke="#e0a814" stroke-width="2"/>
     <circle class="fruit" id="fruit6" cx="50" cy="80" r="9" fill="#FFD75E" stroke="#e0a814" stroke-width="2"/>
+    <g class="leafgrp" id="leaf7"><circle cx="50" cy="66" r="13" fill="#7EE49B"/></g>
+    <g class="leafgrp" id="leaf8"><circle cx="35" cy="58" r="10" fill="#8ff0a8"/></g>
+    <g class="leafgrp" id="leaf9"><circle cx="65" cy="58" r="10" fill="#8ff0a8"/></g>
+    <circle class="fruit" id="fruit7" cx="50" cy="60" r="6" fill="#FFC93C" stroke="#e0a814" stroke-width="2"/>
+    <circle class="fruit" id="fruit8" cx="37" cy="54" r="6" fill="#FF6B81" stroke="#d94a63" stroke-width="2"/>
+    <circle class="fruit" id="fruit9" cx="63" cy="54" r="6" fill="#FFC93C" stroke="#e0a814" stroke-width="2"/>
+    <g class="leafgrp" id="leaf10"><circle cx="50" cy="46" r="9" fill="#9ffab3"/></g>
+    <circle class="fruit" id="fruit10" cx="50" cy="42" r="6" fill="#FFD75E" stroke="#e0a814" stroke-width="2"/>
   </svg>
-  <div id="treeLabel">0/6 บทเรียน</div>
+  <div id="treeLabel">0/10 บทเรียน</div>
 </div>
 
 <section id="hero" class="page activePage">
@@ -472,12 +527,68 @@
     </div>
   </div>
   <div style="text-align:center;margin-top:26px;">
-    <button class="btn" onclick="completeSection(1);scrollToId('s2')">ไปต่อบทที่ 2 ➜</button>
+    <button class="btn" onclick="completeSection(1);scrollToId('s1b')">ไปต่อบทที่ 2 ➜</button>
+  </div>
+</section>
+
+<section id="s1b" class="page">
+  <div class="sectionNum">บทที่ 2</div>
+  <div class="eyebrow">มหัศจรรย์แห่งตัวเลข</div>
+  <h2 class="title">พลังของ "ดอกเบี้ยทบต้น" 🌱💰</h2>
+  <div class="mascotRow">
+    <div class="mascotAvatar"><svg viewBox="0 0 100 100" class="icon"><use href="#bear-think"/></svg></div>
+    <div class="bubble">ถ้าเราลงทุนแล้วได้ผลตอบแทน แล้วเอาผลตอบแทนนั้นไปลงทุนต่ออีก เงินจะยิ่งโตเร็วขึ้นเรื่อยๆ เหมือนก้อนหิมะกลิ้งลงเขา! ลองกดดูปีที่ต่างกัน แล้วดูว่าเงินจะต่างกันแค่ไหน</div>
+  </div>
+
+  <div class="card">
+    <p style="margin:0 0 14px;font-size:14.5px;color:#6b7488;">สมมติ: เก็บเงินเดือนละ <b>500 บาท</b> เทียบกันระหว่าง "หยอดกระปุกเฉยๆ" กับ "ลงทุนได้ผลตอบแทนเฉลี่ย 8% ต่อปี (ทบต้น)"</p>
+    <div class="yearPicker" id="yearPicker">
+      <button class="yearBtn" data-y="5">5 ปี</button>
+      <button class="yearBtn" data-y="10">10 ปี</button>
+      <button class="yearBtn" data-y="20">20 ปี</button>
+      <button class="yearBtn" data-y="30">30 ปี</button>
+    </div>
+    <div class="compare" style="margin-top:18px;">
+      <div class="card" style="background:#FBFAF5;box-shadow:none;">
+        <div class="iconBox" style="width:64px;height:64px;margin:0 auto 8px;"><svg viewBox="0 0 100 100" class="icon"><use href="#piggy"/></svg></div>
+        <h3 style="text-align:center;">หยอดกระปุก</h3>
+        <p class="resultBig" id="jarResult" style="color:var(--sky);">0 บาท</p>
+      </div>
+      <div class="card" style="background:#FBFAF5;box-shadow:none;">
+        <div class="iconBox" style="width:64px;height:64px;margin:0 auto 8px;"><svg viewBox="0 0 100 100" class="icon"><use href="#rocketplant"/></svg></div>
+        <h3 style="text-align:center;">ลงทุนทบต้น 8%</h3>
+        <p class="resultBig" id="investResult" style="color:var(--leaf-dark);">0 บาท</p>
+      </div>
+    </div>
+    <p id="diffText" style="text-align:center;margin-top:14px;font-weight:600;color:var(--coral);"></p>
+  </div>
+
+  <div style="text-align:center;margin-top:26px;">
+    <button class="btn" onclick="completeSection(2);scrollToId('s1c')">ไปต่อบทที่ 3 ➜</button>
+  </div>
+</section>
+
+<section id="s1c" class="page">
+  <div class="sectionNum">บทที่ 3</div>
+  <div class="eyebrow">ตัวร้ายที่มองไม่เห็น</div>
+  <h2 class="title">"เงินเฟ้อ" ทำไมของถึงแพงขึ้นทุกปี? 🍦</h2>
+  <div class="mascotRow">
+    <div class="mascotAvatar"><svg viewBox="0 0 100 100" class="icon"><use href="#bear-sad"/></svg></div>
+    <div class="bubble">ไอศกรีมแท่งเดียวกัน เมื่อก่อนอาจซื้อได้ถูกกว่านี้เยอะ แต่วันนี้แพงขึ้น นี่แหละคือ "เงินเฟ้อ" ที่ทำให้เงินก้อนเดิมของเราซื้อของได้น้อยลงเรื่อยๆ ถ้าเราแค่เก็บเงินเฉยๆ ไม่ลงทุนให้โตทันเงินเฟ้อ มูลค่าจริงของเงินเราก็จะค่อยๆ ลดลง</div>
+  </div>
+
+  <div class="card">
+    <div class="inflationRow" id="inflationRow"></div>
+  </div>
+  <p style="text-align:center;font-size:14.5px;color:#6b7488;margin-top:16px;">เงินเฟ้อเฉลี่ยประมาณปีละ 3% นี่คือเหตุผลสำคัญที่การ "ลงทุน" ให้เงินโตเร็วกว่าเงินเฟ้อ ถึงสำคัญมากๆ</p>
+
+  <div style="text-align:center;margin-top:26px;">
+    <button class="btn" onclick="completeSection(3);scrollToId('s2')">ไปต่อบทที่ 4 ➜</button>
   </div>
 </section>
 
 <section id="s2" class="page">
-  <div class="sectionNum">บทที่ 2</div>
+  <div class="sectionNum">บทที่ 4</div>
   <div class="eyebrow">วัดความเสี่ยง วัดความเป็นตัวคุณ</div>
   <h2 class="title">เธอเป็นนักลงทุนแบบไหนนะ?</h2>
   <div class="mascotRow">
@@ -493,12 +604,12 @@
   <div id="riskResult" class="card"></div>
 
   <div style="text-align:center;margin-top:26px;">
-    <button class="btn" id="s2next" style="display:none;" onclick="completeSection(2);scrollToId('s3')">ไปต่อบทที่ 3 ➜</button>
+    <button class="btn" id="s2next" style="display:none;" onclick="completeSection(4);scrollToId('s3')">ไปต่อบทที่ 5 ➜</button>
   </div>
 </section>
 
 <section id="s3" class="page">
-  <div class="sectionNum">บทที่ 3</div>
+  <div class="sectionNum">บทที่ 5</div>
   <div class="eyebrow">รู้จักหุ้นสักนิด ก่อนคิดเทรด</div>
   <h2 class="title">"หุ้น" คืออะไรกันนะ?</h2>
   <div class="mascotRow">
@@ -514,12 +625,12 @@
   </div>
 
   <div style="text-align:center;margin-top:30px;">
-    <button class="btn" onclick="completeSection(3);scrollToId('s4')">ไปต่อบทที่ 4 ➜</button>
+    <button class="btn" onclick="completeSection(5);scrollToId('s4')">ไปต่อบทที่ 6 ➜</button>
   </div>
 </section>
 
 <section id="s4" class="page">
-  <div class="sectionNum">บทที่ 4</div>
+  <div class="sectionNum">บทที่ 6</div>
   <div class="eyebrow">อย่าใส่ไข่ไว้ในตะกร้าใบเดียว</div>
   <h2 class="title">เกม: กระจายไข่ให้ถูกตะกร้า! 🥚</h2>
   <div class="mascotRow">
@@ -552,12 +663,41 @@
 
   <div style="text-align:center;margin-top:22px;">
     <button class="btn secondary" onclick="checkBaskets()">ตรวจคำตอบ ✅</button>
-    <button class="btn" style="display:none;margin-left:10px;" id="s4next" onclick="completeSection(4);scrollToId('s5')">ไปต่อบทที่ 5 ➜</button>
+    <button class="btn" style="display:none;margin-left:10px;" id="s4next" onclick="completeSection(6);scrollToId('s4b')">ไปต่อบทที่ 7 ➜</button>
+  </div>
+</section>
+
+<section id="s4b" class="page">
+  <div class="sectionNum">บทที่ 7</div>
+  <div class="eyebrow">ทางลัดสำหรับมือใหม่</div>
+  <h2 class="title">ไม่ถนัดเลือกหุ้นเอง? ลอง "กองทุนรวม" 🧺</h2>
+  <div class="mascotRow">
+    <div class="mascotAvatar"><svg viewBox="0 0 100 100" class="icon"><use href="#bear-happy"/></svg></div>
+    <div class="bubble">จำเกมกระจายไข่เมื่อกี้ได้ไหม? "กองทุนรวม" ก็คือการให้ผู้จัดการมืออาชีพช่วยรวมเงินของหลายๆ คน แล้วกระจายไปซื้อหุ้นหรือสินทรัพย์หลายสิบ-หลายร้อยตัวแทนเรา สะดวกมากสำหรับคนที่ยังไม่ถนัดเลือกหุ้นเอง!</div>
+  </div>
+
+  <div class="flipRow" id="fundFlipRow"></div>
+
+  <div class="compare" style="margin-top:24px;">
+    <div class="card">
+      <div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#magnifier"/></svg></div>
+      <h3>ซื้อหุ้นเอง</h3>
+      <p class="sub">ต้องศึกษาและเลือกหุ้นเอง ใช้เวลาและความรู้มากกว่า แต่คุมทิศทางเองได้เต็มที่</p>
+    </div>
+    <div class="card">
+      <div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#fundbasket"/></svg></div>
+      <h3>ซื้อกองทุนรวม</h3>
+      <p class="sub">มีผู้จัดการมืออาชีพช่วยดูแล กระจายความเสี่ยงอัตโนมัติ เหมาะกับมือใหม่ที่มีเวลาศึกษาน้อย</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:26px;">
+    <button class="btn" onclick="completeSection(7);scrollToId('s5')">ไปต่อบทที่ 8 ➜</button>
   </div>
 </section>
 
 <section id="s5" class="page">
-  <div class="sectionNum">บทที่ 5</div>
+  <div class="sectionNum">บทที่ 8</div>
   <div class="eyebrow">6 ขั้นตอนการลงทุนในหุ้น</div>
   <h2 class="title">แผนที่นักลงทุนมือใหม่</h2>
   <div class="mascotRow">
@@ -570,12 +710,32 @@
     <div id="stepsList"></div>
   </div>
   <div style="text-align:center;margin-top:26px;">
-    <button class="btn" id="s5next" disabled onclick="completeSection(5);scrollToId('s6')">ไปต่อบทสุดท้าย ➜</button>
+    <button class="btn" id="s5next" disabled onclick="completeSection(8);scrollToId('s5b')">ไปต่อบทที่ 9 ➜</button>
+  </div>
+</section>
+
+<section id="s5b" class="page">
+  <div class="sectionNum">บทที่ 9</div>
+  <div class="eyebrow">ป้องกันตัวเองไว้ก่อน</div>
+  <h2 class="title">รู้ทัน "กลโกงการลงทุน" ⚠️</h2>
+  <div class="mascotRow">
+    <div class="mascotAvatar"><svg viewBox="0 0 100 100" class="icon"><use href="#bear-sad"/></svg></div>
+    <div class="bubble">มีคนไม่หวังดีชอบหลอกให้คนเอาเงินไปลงทุนแบบผิดๆ ลองจำสัญญาณอันตราย 4 ข้อนี้ไว้ให้ขึ้นใจ ถ้าเจอแบบนี้ ให้รีบหนีเลย!</div>
+  </div>
+
+  <div class="warnGrid" id="warnGrid"></div>
+
+  <div class="card" style="margin-top:20px;background:#EAF9EE;">
+    <p style="margin:0;font-size:14.5px;line-height:1.8;"><b>💡 จำไว้เสมอ:</b> การลงทุนที่แท้จริง <b>มีความเสี่ยงเสมอ</b> ไม่มีใครการันตีกำไร 100% ได้ ถ้าใครมาชวนแบบนั้น ให้สงสัยไว้ก่อนเลย และควรตรวจสอบกับสำนักงาน ก.ล.ต. (www.sec.or.th) ทุกครั้งก่อนตัดสินใจ</p>
+  </div>
+
+  <div style="text-align:center;margin-top:26px;">
+    <button class="btn" onclick="completeSection(9);scrollToId('s6')">ไปต่อบททดสอบสุดท้าย ➜</button>
   </div>
 </section>
 
 <section id="s6" class="page">
-  <div class="sectionNum">บทที่ 6</div>
+  <div class="sectionNum">แบบทดสอบสุดท้าย</div>
   <div class="eyebrow">แบบทดสอบส่งท้าย</div>
   <h2 class="title">มาทดสอบความเข้าใจกัน!</h2>
   <div class="mascotRow">
@@ -601,12 +761,12 @@
 <div id="pageNav">
   <button id="prevBtn" onclick="prevPage()">‹</button>
   <div id="pageDots"></div>
-  <span id="pageCounter">1 / 8</span>
+  <span id="pageCounter">1 / 12</span>
   <button id="nextBtn" onclick="nextPage()">›</button>
 </div>
 
 <script>
-const pageIds = ['hero','s0','s1','s2','s3','s4','s5','s6'];
+const pageIds = ['hero','s0','s1','s1b','s1c','s2','s3','s4','s4b','s5','s5b','s6'];
 let currentPage = 0;
 
 function animateBarsIfNeeded(id){
@@ -655,9 +815,9 @@ document.addEventListener('keydown', (e)=>{
 let completed = new Set();
 function completeSection(n){
   completed.add(n);
-  document.getElementById('treeLabel').textContent = completed.size + '/6 บทเรียน';
-  const leafIds = ['leaf1','leaf2','leaf3','leaf4','leaf5','leaf6'];
-  const fruitIds = ['fruit1','fruit2','fruit3','fruit4','fruit5','fruit6'];
+  document.getElementById('treeLabel').textContent = completed.size + '/10 บทเรียน';
+  const leafIds = ['leaf1','leaf2','leaf3','leaf4','leaf5','leaf6','leaf7','leaf8','leaf9','leaf10'];
+  const fruitIds = ['fruit1','fruit2','fruit3','fruit4','fruit5','fruit6','fruit7','fruit8','fruit9','fruit10'];
   for(let i=0;i<completed.size;i++){
     document.getElementById(leafIds[i])?.classList.add('show');
     setTimeout(()=>document.getElementById(fruitIds[i])?.classList.add('show'), 300+i*80);
@@ -722,6 +882,43 @@ function showRiskResult(){
 }
 renderQuiz();
 
+/* ---------- s1b: compound interest playground ---------- */
+function calcCompound(years){
+  const monthly = 500, months = years*12, monthlyRate = 0.08/12;
+  const jar = monthly*months;
+  const invest = monthly*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+  document.getElementById('jarResult').textContent = Math.round(jar).toLocaleString('th-TH')+' บาท';
+  document.getElementById('investResult').textContent = Math.round(invest).toLocaleString('th-TH')+' บาท';
+  const diff = Math.round(invest-jar);
+  document.getElementById('diffText').textContent = `ต่างกันถึง ${diff.toLocaleString('th-TH')} บาท! ยิ่งลงทุนนาน ยิ่งต่างเยอะ 🚀`;
+}
+const yearPicker = document.getElementById('yearPicker');
+yearPicker.querySelectorAll('.yearBtn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    yearPicker.querySelectorAll('.yearBtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    calcCompound(parseInt(b.dataset.y));
+  });
+});
+yearPicker.querySelector('.yearBtn[data-y="5"]').classList.add('active');
+calcCompound(5);
+
+/* ---------- s1c: inflation time machine ---------- */
+const inflationData = [
+  {label:"10 ปีที่แล้ว", years:-10},
+  {label:"วันนี้", years:0},
+  {label:"อีก 10 ปี", years:10},
+];
+const basePrice = 15;
+document.getElementById('inflationRow').innerHTML = inflationData.map(d=>{
+  const price = Math.round(basePrice*Math.pow(1.03, d.years));
+  return `<div class="inflationCard ${d.years===0?'now':''}">
+    <div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#icecream"/></svg></div>
+    <div class="infLabel">${d.label}</div>
+    <div class="infPrice">${price} บาท</div>
+  </div>`;
+}).join('');
+
 const flipData = [
   {icon:"crown", cap:"เป็นเจ้าของ", back:"ถือหุ้น = เป็นหนึ่งในเจ้าของบริษัทนั้นทันที มีสิทธิ์ในทรัพย์สินและกำไรตามสัดส่วน"},
   {icon:"coinstack", cap:"เงินปันผล", back:"บริษัททำกำไรดี อาจแบ่งกำไรกลับมาให้ผู้ถือหุ้นเป็น 'เงินปันผล'"},
@@ -751,6 +948,35 @@ document.getElementById('glossaryRow').innerHTML = glossaryData.map((f)=>`
       <div class="flipFace flipFront"><div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#${f.icon}"/></svg></div><div class="cap">${f.cap}</div><div style="font-size:10px;color:#9b9482;margin-top:4px;">(กดดูความหมาย)</div></div>
       <div class="flipFace flipBack">${f.back}</div>
     </div>
+  </div>
+`).join('');
+
+/* ---------- s4b: mutual fund flip cards ---------- */
+const fundFlipData = [
+  {icon:"fundbasket", cap:"มืออาชีพดูแล", back:"มีผู้จัดการกองทุนที่มีความรู้ คอยตัดสินใจซื้อขายแทนเรา"},
+  {icon:"chartup", cap:"กระจายเสี่ยงอัตโนมัติ", back:"เงินก้อนเดียวกระจายไปในหุ้น/ตราสารหลายสิบ-หลายร้อยตัวทันที"},
+  {icon:"coinstack", cap:"เริ่มต้นน้อยก็ได้", back:"หลายกองทุนเริ่มลงทุนได้ด้วยเงินหลักร้อยถึงหลักพันบาทเท่านั้น"},
+];
+document.getElementById('fundFlipRow').innerHTML = fundFlipData.map((f)=>`
+  <div class="flip" onclick="this.classList.toggle('on')">
+    <div class="flipInner">
+      <div class="flipFace flipFront"><div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#${f.icon}"/></svg></div><div class="cap">${f.cap}</div><div style="font-size:11px;color:#9b9482;margin-top:4px;">(กดดูคำตอบ)</div></div>
+      <div class="flipFace flipBack">${f.back}</div>
+    </div>
+  </div>
+`).join('');
+
+/* ---------- s5b: scam warning grid ---------- */
+const warnData = [
+  {t:"การันตีผลตอบแทนสูงลิ่ว", d:"บอกว่าได้กำไรแน่ๆ 20-50% ต่อเดือน แบบไม่มีความเสี่ยงเลย ในโลกจริงไม่มีการลงทุนแบบนี้"},
+  {t:"เร่งให้รีบตัดสินใจ", d:"บอกว่าต้องโอนเงินวันนี้เดี๋ยวนี้เท่านั้น ไม่ให้เวลาคิดหรือตรวจสอบข้อมูล"},
+  {t:"ชวนหาสมาชิกต่อเป็นทอดๆ", d:"ได้ผลตอบแทนจากการชวนคนอื่นมาลงทุนต่อ มากกว่าจากธุรกิจจริง (ลักษณะแชร์ลูกโซ่)"},
+  {t:"ไม่มีใบอนุญาตถูกต้อง", d:"ไม่ได้รับอนุญาตจากหน่วยงานกำกับดูแล เช่น ก.ล.ต. และตรวจสอบตัวตนไม่ได้"},
+];
+document.getElementById('warnGrid').innerHTML = warnData.map(w=>`
+  <div class="warnCard">
+    <div class="iconBox"><svg viewBox="0 0 100 100" class="icon"><use href="#warnsign"/></svg></div>
+    <div><h4>${w.t}</h4><p>${w.d}</p></div>
   </div>
 `).join('');
 
@@ -885,7 +1111,7 @@ function submitFinalQuiz(){
   else {iconId="bear-sad"; msg="ยังไม่เป็นไร ลองย้อนกลับไปอ่านแต่ละบทอีกทีนะ แล้วมาลองใหม่!";}
   document.getElementById('medalIcon').innerHTML = `<svg viewBox="0 0 100 100" class="icon"><use href="#${iconId}"/></svg>`;
   document.getElementById('scoreMsg').textContent = msg;
-  completeSection(6);
+  completeSection(10);
   board.scrollIntoView({behavior:'smooth', block:'center'});
 }
 </script>
