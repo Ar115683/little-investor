@@ -46,6 +46,20 @@
   #pageDots .pdot{width:8px;height:8px;border-radius:50%;background:#E5E1D3;cursor:pointer;transition:all .2s ease;}
   #pageDots .pdot.on{background:var(--leaf);width:20px;border-radius:5px;}
   @media (max-width:720px){#pageNav{bottom:8px;padding:6px 10px;gap:8px;} #pageNav button{width:32px;height:32px;font-size:16px;} #pageDots{display:none;}}
+
+  /* ---------- Side table-of-contents menu ---------- */
+  #menuToggle{position:fixed;top:16px;left:16px;z-index:700;width:46px;height:46px;border-radius:14px;border:none;background:var(--card);box-shadow:var(--shadow);font-size:20px;cursor:pointer;color:var(--leaf-dark);display:flex;align-items:center;justify-content:center;}
+  #sideOverlay{position:fixed;inset:0;background:rgba(43,58,85,0.35);z-index:800;opacity:0;visibility:hidden;transition:opacity .25s ease;}
+  #sideOverlay.open{opacity:1;visibility:visible;}
+  #sideMenu{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:82vw;background:var(--card);z-index:900;box-shadow:0 0 30px rgba(0,0,0,0.2);transform:translateX(-100%);transition:transform .3s ease;overflow-y:auto;padding:22px 0;}
+  #sideMenu.open{transform:translateX(0);}
+  .sideMenuHead{font-family:'Mitr',sans-serif;font-weight:700;font-size:16px;color:var(--leaf-dark);padding:0 20px 16px;border-bottom:2px dashed #EDE9DD;margin-bottom:6px;}
+  .sideMenuItem{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;font-size:14px;color:var(--ink);border-left:4px solid transparent;transition:all .15s ease;}
+  .sideMenuItem:hover{background:#FBFAF5;}
+  .sideMenuItem.active{background:#EAF9EE;border-left-color:var(--leaf);font-weight:600;color:var(--leaf-dark);}
+  .sideMenuItem .num{width:24px;height:24px;border-radius:50%;background:#EDE9DD;display:flex;align-items:center;justify-content:center;font-family:'Mitr',sans-serif;font-size:11px;font-weight:700;color:#8a8470;flex-shrink:0;}
+  .sideMenuItem.active .num{background:var(--leaf);color:#fff;}
+  @media (max-width:720px){#menuToggle{width:40px;height:40px;font-size:17px;top:10px;left:10px;}}
   .eyebrow{display:inline-block;font-family:'Mitr',sans-serif;font-weight:600;font-size:13px;letter-spacing:.5px;color:var(--leaf-dark);background:#E8F7EC;padding:5px 14px;border-radius:999px;margin-bottom:14px;}
   h2.title{font-size:clamp(26px,4vw,38px);margin:0 0 16px;line-height:1.25;}
   .card{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:24px;}
@@ -446,6 +460,13 @@
   <div id="treeLabel">0/10 บทเรียน</div>
 </div>
 
+<button id="menuToggle" aria-label="เปิดสารบัญ">☰</button>
+<div id="sideOverlay"></div>
+<nav id="sideMenu">
+  <div class="sideMenuHead">📚 สารบัญบทเรียน</div>
+  <div id="sideMenuList"></div>
+</nav>
+
 <section id="hero" class="page activePage">
   <div class="badge">🌱 คู่มือนักลงทุนตัวน้อย</div>
   <h1>มาปลูก <span>ต้นไม้แห่งความมั่งคั่ง</span><br>ไปด้วยกันนะ!</h1>
@@ -795,7 +816,38 @@ function updateNav(){
   document.getElementById('nextBtn').disabled = currentPage===pageIds.length-1;
   document.querySelectorAll('#pageDots .pdot').forEach((d,i)=>d.classList.toggle('on', i===currentPage));
   document.getElementById('pageCounter').textContent = (currentPage+1)+' / '+pageIds.length;
+  document.querySelectorAll('.sideMenuItem').forEach((el,i)=>el.classList.toggle('active', i===currentPage));
 }
+
+/* ---------- Side table-of-contents menu ---------- */
+const menuData = [
+  {label:"หน้าแรก"},
+  {label:"ก่อนเริ่ม: นิทานร้านน้ำมะม่วงปั่น"},
+  {label:"บทที่ 1: ทำไมออมอย่างเดียวไม่พอ"},
+  {label:"บทที่ 2: ดอกเบี้ยทบต้น"},
+  {label:"บทที่ 3: เงินเฟ้อ"},
+  {label:"บทที่ 4: เธอเป็นนักลงทุนแบบไหน"},
+  {label:"บทที่ 5: หุ้นคืออะไร"},
+  {label:"บทที่ 6: กระจายความเสี่ยง"},
+  {label:"บทที่ 7: กองทุนรวม"},
+  {label:"บทที่ 8: แผนที่นักลงทุน"},
+  {label:"บทที่ 9: รู้ทันกลโกง"},
+  {label:"แบบทดสอบสุดท้าย"},
+];
+const sideMenuList = document.getElementById('sideMenuList');
+menuData.forEach((m,i)=>{
+  const div = document.createElement('div');
+  div.className = 'sideMenuItem';
+  div.innerHTML = `<span class="num">${i+1}</span><span>${m.label}</span>`;
+  div.addEventListener('click', ()=>{ showPage(i); closeMenu(); });
+  sideMenuList.appendChild(div);
+});
+function openMenu(){ document.getElementById('sideMenu').classList.add('open'); document.getElementById('sideOverlay').classList.add('open'); }
+function closeMenu(){ document.getElementById('sideMenu').classList.remove('open'); document.getElementById('sideOverlay').classList.remove('open'); }
+document.getElementById('menuToggle').addEventListener('click', ()=>{
+  document.getElementById('sideMenu').classList.contains('open') ? closeMenu() : openMenu();
+});
+document.getElementById('sideOverlay').addEventListener('click', closeMenu);
 
 const dotsWrap = document.getElementById('pageDots');
 pageIds.forEach((id,i)=>{
