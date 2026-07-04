@@ -183,6 +183,12 @@
   footer{text-align:center;padding:36px 20px 56px;color:#9b9482;font-size:12.5px;}
 
   /* ---------- Compound interest (s1b) ---------- */
+  .calcGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;}
+  @media (max-width:720px){.calcGrid{grid-template-columns:repeat(2,1fr);}}
+  .calcField{display:flex;flex-direction:column;gap:6px;}
+  .calcField label{font-size:12px;color:#8a8470;font-weight:600;}
+  .calcField input{font-family:'Sarabun',sans-serif;font-size:15px;padding:10px 12px;border-radius:12px;border:2px solid #EDE9DD;background:#FBFAF5;color:var(--ink);width:100%;box-sizing:border-box;}
+  .calcField input:focus{outline:none;border-color:var(--leaf);background:#fff;}
   .yearPicker{display:flex;gap:10px;flex-wrap:wrap;}
   .yearBtn{font-family:'Mitr',sans-serif;font-weight:600;background:#FBFAF5;border:2px solid #EDE9DD;border-radius:999px;padding:10px 22px;cursor:pointer;font-size:14px;color:var(--ink);transition:all .15s ease;}
   .yearBtn:hover{border-color:var(--sun);}
@@ -562,22 +568,43 @@
   </div>
 
   <div class="card">
-    <p style="margin:0 0 14px;font-size:14.5px;color:#6b7488;">สมมติ: เก็บเงินเดือนละ <b>500 บาท</b> เทียบกันระหว่าง "หยอดกระปุกเฉยๆ" กับ "ลงทุนได้ผลตอบแทนเฉลี่ย 8% ต่อปี (ทบต้น)"</p>
+    <p style="margin:0 0 14px;font-size:14.5px;color:#6b7488;">ลองใส่ตัวเลขของตัวเองดูได้เลย แล้วดูว่า "หยอดกระปุกเฉยๆ" กับ "ลงทุนแบบทบต้น" จะต่างกันแค่ไหน!</p>
+
+    <div class="calcGrid" id="calcGrid">
+      <div class="calcField">
+        <label for="calcInit">เงินเริ่มต้น (บาท)</label>
+        <input type="number" id="calcInit" value="1000" min="0" step="100">
+      </div>
+      <div class="calcField">
+        <label for="calcMonthly">ลงทุนเพิ่มทุกเดือน (บาท)</label>
+        <input type="number" id="calcMonthly" value="500" min="0" step="50">
+      </div>
+      <div class="calcField">
+        <label for="calcRate">ผลตอบแทนเฉลี่ยต่อปี (%)</label>
+        <input type="number" id="calcRate" value="8" min="0" max="30" step="0.5">
+      </div>
+      <div class="calcField">
+        <label for="calcYears">ระยะเวลา (ปี)</label>
+        <input type="number" id="calcYears" value="10" min="1" max="50" step="1">
+      </div>
+    </div>
+
     <div class="yearPicker" id="yearPicker">
       <button class="yearBtn" data-y="5">5 ปี</button>
-      <button class="yearBtn" data-y="10">10 ปี</button>
+      <button class="yearBtn active" data-y="10">10 ปี</button>
       <button class="yearBtn" data-y="20">20 ปี</button>
       <button class="yearBtn" data-y="30">30 ปี</button>
     </div>
+
     <div class="compare" style="margin-top:18px;">
       <div class="card" style="background:#FBFAF5;box-shadow:none;">
         <div class="iconBox" style="width:64px;height:64px;margin:0 auto 8px;"><svg viewBox="0 0 100 100" class="icon"><use href="#piggy"/></svg></div>
-        <h3 style="text-align:center;">หยอดกระปุก</h3>
+        <h3 style="text-align:center;">หยอดกระปุก (ไม่มีดอกเบี้ย)</h3>
         <p class="resultBig" id="jarResult" style="color:var(--sky);">0 บาท</p>
       </div>
       <div class="card" style="background:#FBFAF5;box-shadow:none;">
         <div class="iconBox" style="width:64px;height:64px;margin:0 auto 8px;"><svg viewBox="0 0 100 100" class="icon"><use href="#rocketplant"/></svg></div>
-        <h3 style="text-align:center;">ลงทุนทบต้น 8%</h3>
+        <h3 style="text-align:center;" id="investTitle">ลงทุนทบต้น 8%</h3>
         <p class="resultBig" id="investResult" style="color:var(--leaf-dark);">0 บาท</p>
       </div>
     </div>
@@ -934,26 +961,47 @@ function showRiskResult(){
 }
 renderQuiz();
 
-/* ---------- s1b: compound interest playground ---------- */
-function calcCompound(years){
-  const monthly = 500, months = years*12, monthlyRate = 0.08/12;
-  const jar = monthly*months;
-  const invest = monthly*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+/* ---------- s1b: compound interest calculator ---------- */
+function calcCompound(){
+  const init = Math.max(0, parseFloat(document.getElementById('calcInit').value) || 0);
+  const monthly = Math.max(0, parseFloat(document.getElementById('calcMonthly').value) || 0);
+  const ratePct = Math.max(0, parseFloat(document.getElementById('calcRate').value) || 0);
+  const years = Math.max(1, parseInt(document.getElementById('calcYears').value) || 1);
+  const months = years*12;
+  const monthlyRate = (ratePct/100)/12;
+
+  const jar = init + monthly*months;
+  let invest;
+  if(monthlyRate > 0){
+    invest = init*Math.pow(1+monthlyRate, months) + monthly*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+  } else {
+    invest = jar;
+  }
+
   document.getElementById('jarResult').textContent = Math.round(jar).toLocaleString('th-TH')+' บาท';
   document.getElementById('investResult').textContent = Math.round(invest).toLocaleString('th-TH')+' บาท';
+  document.getElementById('investTitle').textContent = `ลงทุนทบต้น ${ratePct}%`;
   const diff = Math.round(invest-jar);
-  document.getElementById('diffText').textContent = `ต่างกันถึง ${diff.toLocaleString('th-TH')} บาท! ยิ่งลงทุนนาน ยิ่งต่างเยอะ 🚀`;
+  const diffText = document.getElementById('diffText');
+  if(diff > 0){
+    diffText.textContent = `ต่างกันถึง ${diff.toLocaleString('th-TH')} บาท! ยิ่งลงทุนนาน ยิ่งต่างเยอะ 🚀`;
+  } else {
+    diffText.textContent = `ลองปรับผลตอบแทนหรือระยะเวลาให้มากขึ้น แล้วดูว่าเงินจะต่างกันแค่ไหน!`;
+  }
 }
+['calcInit','calcMonthly','calcRate','calcYears'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', calcCompound);
+});
 const yearPicker = document.getElementById('yearPicker');
 yearPicker.querySelectorAll('.yearBtn').forEach(b=>{
   b.addEventListener('click', ()=>{
     yearPicker.querySelectorAll('.yearBtn').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
-    calcCompound(parseInt(b.dataset.y));
+    document.getElementById('calcYears').value = b.dataset.y;
+    calcCompound();
   });
 });
-yearPicker.querySelector('.yearBtn[data-y="5"]').classList.add('active');
-calcCompound(5);
+calcCompound();
 
 /* ---------- s1c: inflation time machine ---------- */
 const inflationData = [
